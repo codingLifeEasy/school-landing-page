@@ -1,0 +1,56 @@
+// ==========================================================
+//  Ghoksadanga Pramanik High School (H.S.)
+//  Design tokens
+//
+//  Palette rationale:
+//   - Navy + white  -> the school uniform (West Bengal
+//     government-aided schools: white shirt, navy bottoms)
+//   - Parchment + gold -> the formal, academic "notice board"
+//     character of the University of Calcutta site
+// ==========================================================
+
+// ---- Brand / uniform colours -----------------------------
+$navy:          #0f2147; // deep navy - uniform, headers, footer
+$navy-700:      #17306a;
+$royal:         #253b80; // royal blue - buttons, links, accents
+$royal-300:     #475da4;
+$gold:          #ce9915; // gold - rules, plaques, highlights
+$gold-200:      #f0d99a;
+
+// ---- Neutrals --------------------------------------------
+$parchment:     #f7f4ec; // page background
+$paper:         #ffffff;
+$mist:          #eef2fb; // pale blue tint blocks
+$mist-2:        #f5f7ff;
+$line:          #dfe4f0;
+
+// ---- Text ------------------------------------------------
+$ink:           #1c2333;
+$ink-soft:      #4d5670;
+$ink-faint:     #7b849c;
+
+// ---- Status ----------------------------------------------
+$maroon:        #990000; // "new"/urgent notices
+
+// ---- Typography ------------------------------------------
+$font-body: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-head: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-bn:   "Noto Sans Bengali", "Nirmala UI", $font-body;
+
+// ---- Layout ----------------------------------------------
+$container: 1180px;
+$radius:    6px;
+$radius-lg: 10px;
+
+$shadow-sm: 0 1px 3px rgba(15, 33, 71, 0.10);
+$shadow:    0 4px 16px rgba(15, 33, 71, 0.10);
+$shadow-lg: 0 12px 34px rgba(15, 33, 71, 0.16);
+
+// ---- Breakpoints -----------------------------------------
+$bp-lg: 1080px;
+$bp-md: 860px;
+$bp-sm: 620px;
+
+@mixin below($bp) {
+  @media (max-width: $bp) { @content; }
+}

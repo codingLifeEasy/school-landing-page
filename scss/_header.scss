@@ -1,0 +1,209 @@
+@use "variables" as *;
+
+// ================= Utility top bar =================
+.topbar {
+  background: $navy;
+  color: rgba(#fff, 0.82);
+  font-size: 12.5px;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 38px;
+  }
+
+  &__address {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    @include below($bp-md) { display: none; }
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    a {
+      transition: color 0.2s ease;
+      &:hover { color: $gold; }
+    }
+
+    @include below($bp-sm) {
+      width: 100%;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 11.5px;
+    }
+  }
+}
+
+// ================= Masthead =================
+.masthead {
+  background: $parchment;
+  border-bottom: 3px solid $gold;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-block: 16px; // not `padding` - see note in _hero.scss
+  }
+
+  &__crest {
+    flex-shrink: 0;
+    width: 70px;
+    height: 70px;
+
+    @include below($bp-sm) { width: 54px; height: 54px; }
+  }
+
+  &__names { min-width: 0; }
+
+  &__bn {
+    font-family: $font-bn;
+    font-size: 14px;
+    color: $royal;
+    line-height: 1.4;
+    @include below($bp-sm) { font-size: 12px; }
+  }
+
+  &__en {
+    font-size: 25px;
+    font-weight: 600;
+    color: $navy;
+    line-height: 1.2;
+
+    @include below($bp-md) { font-size: 20px; }
+    @include below($bp-sm) { font-size: 16px; }
+  }
+
+  &__meta {
+    margin-top: 3px;
+    font-size: 12px;
+    color: $ink-soft;
+
+    span + span {
+      &::before {
+        content: "•";
+        margin: 0 8px;
+        color: $gold;
+      }
+    }
+    @include below($bp-sm) { font-size: 10.5px; }
+  }
+
+  &__aside {
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
+
+    @include below($bp-lg) { display: none; }
+  }
+
+  &__phone {
+    font-size: 18px;
+    font-weight: 600;
+    color: $navy;
+  }
+
+  &__phone-label {
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $ink-faint;
+  }
+}
+
+// ================= Primary navigation =================
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: $royal;
+  box-shadow: $shadow-sm;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+
+    @include below($bp-md) {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background: $royal;
+      box-shadow: $shadow;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.28s ease;
+
+      &.is-open { max-height: 480px; }
+    }
+  }
+
+  &__link {
+    display: block;
+    padding: 14px 17px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(#fff, 0.92);
+    border-bottom: 3px solid transparent;
+    transition: background 0.2s ease, border-color 0.2s ease;
+
+    &:hover { background: $navy; }
+
+    &.is-active {
+      background: $navy;
+      border-bottom-color: $gold;
+    }
+
+    @include below($bp-md) {
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(#fff, 0.12);
+    }
+  }
+
+  &__toggle {
+    display: none;
+    background: none;
+    border: 0;
+    padding: 13px 20px;
+    cursor: pointer;
+
+    @include below($bp-md) { display: flex; flex-direction: column; gap: 5px; }
+
+    span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: $paper;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+
+    &.is-open {
+      span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      span:nth-child(2) { opacity: 0; }
+      span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    }
+  }
+
+  &__brand {
+    display: none;
+    padding: 12px 20px;
+    color: $paper;
+    font-weight: 600;
+    font-size: 14px;
+
+    @include below($bp-md) { display: block; }
+  }
+}

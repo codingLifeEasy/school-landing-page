@@ -1,0 +1,13 @@
+{
+  "name": "gphs-website",
+  "version": "1.0.0",
+  "description": "Static website for Ghoksadanga Pramanik High School (H.S.), Cooch Behar, West Bengal",
+  "private": true,
+  "scripts": {
+    "build": "sass scss/main.scss css/main.css --style=compressed --no-source-map",
+    "dev": "sass --watch scss/main.scss css/main.css"
+  },
+  "devDependencies": {
+    "sass": "^1.104.0"
+  }
+}

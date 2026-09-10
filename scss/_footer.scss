@@ -1,0 +1,104 @@
+@use "variables" as *;
+
+.footer {
+  background: $navy;
+  color: rgba(#fff, 0.7);
+  font-size: 13.5px;
+
+  &__top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 40px;
+    padding-block: 48px 38px; // not `padding` - see note in _hero.scss
+
+    @include below($bp-md) { grid-template-columns: 1fr 1fr; gap: 30px; }
+    @include below($bp-sm) { grid-template-columns: 1fr; }
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  &__crest { width: 52px; height: 52px; flex-shrink: 0; }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+    color: $paper;
+    line-height: 1.3;
+  }
+
+  &__estd {
+    font-size: 11.5px;
+    color: $gold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__about { max-width: 340px; }
+
+  &__title {
+    margin-bottom: 15px;
+    font-size: 14.5px;
+    color: $paper;
+    letter-spacing: 0.04em;
+  }
+
+  &__links li { margin-bottom: 9px; }
+
+  &__links a {
+    position: relative;
+    padding-left: 15px;
+    transition: color 0.2s ease;
+
+    &::before {
+      content: "›";
+      position: absolute;
+      left: 0;
+      color: $gold;
+    }
+
+    &:hover { color: $paper; }
+  }
+
+  &__contact li {
+    margin-bottom: 11px;
+    line-height: 1.55;
+  }
+
+  &__bottom {
+    padding: 16px 0;
+    border-top: 1px solid rgba(#fff, 0.12);
+    text-align: center;
+    font-size: 12.5px;
+    color: rgba(#fff, 0.5);
+  }
+}
+
+// ================= Back to top =================
+.to-top {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 90;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: $royal;
+  color: $paper;
+  cursor: pointer;
+  box-shadow: $shadow;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease, background 0.2s ease;
+
+  &.is-visible { opacity: 1; visibility: visible; transform: none; }
+  &:hover { background: $gold; color: $navy; }
+}

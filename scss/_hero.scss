@@ -1,0 +1,181 @@
+@use "variables" as *;
+
+// ================= Hero / banner =================
+.hero {
+  position: relative;
+  background: linear-gradient(115deg, $navy 0%, $navy-700 55%, $royal 100%);
+  color: $paper;
+  overflow: hidden;
+
+  // faint repeating rule pattern - "ledger paper" texture
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      180deg,
+      rgba(#fff, 0.045) 0 1px,
+      transparent 1px 46px
+    );
+    pointer-events: none;
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 330px;
+    align-items: center;
+    gap: 40px;
+    // padding-block only - a `padding` shorthand here would wipe out
+    // the horizontal padding inherited from .container
+    padding-block: 54px 60px;
+
+    @include below($bp-md) {
+      grid-template-columns: 1fr;
+      gap: 26px;
+      padding-block: 40px 44px;
+      text-align: center;
+    }
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 15px;
+    margin-bottom: 18px;
+    border: 1px solid rgba($gold, 0.55);
+    border-radius: 30px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $gold-200;
+  }
+
+  &__title {
+    font-size: 40px;
+    color: $paper;
+    line-height: 1.15;
+
+    @include below($bp-lg) { font-size: 33px; }
+    @include below($bp-sm) { font-size: 25px; }
+  }
+
+  &__bn {
+    font-family: $font-bn;
+    font-size: 17px;
+    color: $gold-200;
+    margin-bottom: 10px;
+    @include below($bp-sm) { font-size: 14px; }
+  }
+
+  // The founder's own words, used as the school's motto
+  &__motto {
+    max-width: 540px;
+    margin: 18px 0 26px;
+    padding-left: 16px;
+    border-left: 3px solid $gold;
+    font-size: 15.5px;
+    font-style: italic;
+    color: rgba(#fff, 0.86);
+
+    @include below($bp-md) {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    @include below($bp-md) { justify-content: center; }
+  }
+
+  // ---- statue column ----
+  &__statue {
+    justify-self: center;
+    width: 300px;
+    max-width: 100%;
+    filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.4));
+
+    @include below($bp-md) { width: 210px; }
+  }
+}
+
+// The founder's bust, drawn as a monument silhouette.
+// Reused in the hero and in the founder section.
+.statue {
+  &__glow {
+    animation: statueGlow 6s ease-in-out infinite;
+    transform-origin: center;
+  }
+}
+
+@keyframes statueGlow {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 0.7; }
+}
+
+// ================= Rolling notice ticker =================
+.ticker {
+  display: flex;
+  align-items: stretch;
+  background: $gold;
+  color: $navy;
+  overflow: hidden;
+
+  &__label {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: $navy;
+    color: $paper;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+
+    @include below($bp-sm) { padding: 10px 12px; font-size: 11px; }
+  }
+
+  &__viewport {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  &__track {
+    display: flex;
+    flex-shrink: 0;
+    gap: 46px;
+    padding-left: 46px;
+    white-space: nowrap;
+    animation: tickerScroll 34s linear infinite;
+  }
+
+  &:hover &__track { animation-play-state: paused; }
+
+  &__item {
+    font-size: 13.5px;
+    font-weight: 500;
+
+    &::before {
+      content: "▪";
+      margin-right: 9px;
+      color: $navy;
+      opacity: 0.5;
+    }
+  }
+}
+
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

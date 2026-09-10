@@ -1,0 +1,452 @@
+@use "variables" as *;
+
+// ================= Notice boards (3 columns) =================
+.boards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  @include below($bp-lg) { grid-template-columns: repeat(2, 1fr); }
+  @include below($bp-sm) { grid-template-columns: 1fr; }
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  background: $paper;
+  border: 1px solid $line;
+  border-radius: $radius;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 18px;
+    background: $navy;
+    color: $paper;
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+
+  &__icon { color: $gold; }
+
+  &__list {
+    flex: 1;
+    padding: 6px 18px;
+  }
+
+  &__item {
+    padding: 12px 0;
+    border-bottom: 1px dashed $line;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: $ink-soft;
+
+    &:last-child { border-bottom: 0; }
+
+    a {
+      color: $ink;
+      transition: color 0.2s ease;
+      &:hover { color: $royal; }
+    }
+  }
+
+  &__date {
+    display: block;
+    margin-top: 4px;
+    font-size: 11.5px;
+    color: $ink-faint;
+  }
+
+  &__tag {
+    display: inline-block;
+    margin-left: 7px;
+    padding: 1px 7px;
+    border-radius: 3px;
+    background: rgba($maroon, 0.09);
+    color: $maroon;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  &__foot {
+    padding: 12px 18px;
+    border-top: 1px solid $line;
+    background: $mist-2;
+    text-align: right;
+
+    a {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: $royal;
+      &:hover { color: $navy; }
+    }
+  }
+}
+
+// ================= About =================
+.about {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 46px;
+  align-items: start;
+
+  @include below($bp-md) { grid-template-columns: 1fr; gap: 32px; }
+
+  &__body p + p { margin-top: 14px; }
+  &__body p { color: $ink-soft; }
+
+  &__facts {
+    background: $paper;
+    border: 1px solid $line;
+    border-top: 3px solid $gold;
+    border-radius: $radius;
+    padding: 22px 24px;
+    box-shadow: $shadow-sm;
+  }
+
+  &__fact {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 11px 0;
+    border-bottom: 1px dashed $line;
+    font-size: 13.5px;
+
+    &:last-child { border-bottom: 0; }
+
+    dt { color: $ink-faint; }
+    dd { font-weight: 600; color: $navy; text-align: right; }
+  }
+}
+
+// ================= Founder / statue feature =================
+.founder {
+  position: relative;
+  background:
+    linear-gradient(rgba($navy, 0.94), rgba($navy, 0.94)),
+    repeating-linear-gradient(135deg, $navy 0 12px, $navy-700 12px 24px);
+  color: rgba(#fff, 0.88);
+  overflow: hidden;
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 50px;
+    align-items: center;
+
+    @include below($bp-md) {
+      grid-template-columns: 1fr;
+      gap: 30px;
+      text-align: center;
+    }
+  }
+
+  &__statue {
+    justify-self: center;
+    width: 260px;
+    max-width: 100%;
+    filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.45));
+  }
+
+  &__label {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $gold;
+    margin-bottom: 10px;
+  }
+
+  &__name {
+    font-size: 32px;
+    color: $paper;
+    margin-bottom: 6px;
+    @include below($bp-sm) { font-size: 24px; }
+  }
+
+  &__years {
+    font-size: 13px;
+    color: rgba(#fff, 0.6);
+    margin-bottom: 18px;
+  }
+
+  &__text p + p { margin-top: 13px; }
+
+  &__quote {
+    margin-top: 22px;
+    padding: 18px 22px;
+    background: rgba(#fff, 0.06);
+    border-left: 3px solid $gold;
+    border-radius: 0 $radius $radius 0;
+    font-style: italic;
+    color: $paper;
+
+    @include below($bp-md) { text-align: left; }
+  }
+}
+
+// ================= Headmaster's message =================
+.principal {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 44px;
+  align-items: start;
+
+  @include below($bp-md) { grid-template-columns: 1fr; gap: 28px; }
+
+  &__card {
+    background: $paper;
+    border: 1px solid $line;
+    border-radius: $radius;
+    padding: 26px 22px;
+    text-align: center;
+    box-shadow: $shadow-sm;
+
+    @include below($bp-md) { max-width: 320px; margin: 0 auto; }
+  }
+
+  &__avatar {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: $mist;
+    border: 3px solid $gold;
+    padding: 8px;
+  }
+
+  &__name {
+    font-size: 17px;
+    margin-bottom: 3px;
+  }
+
+  &__role {
+    font-size: 12.5px;
+    color: $ink-faint;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  &__body {
+    p + p { margin-top: 14px; }
+    p { color: $ink-soft; }
+  }
+
+  &__sign {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px dashed $line;
+    font-size: 13px;
+    color: $ink-faint;
+
+    strong { display: block; color: $navy; font-size: 14.5px; }
+  }
+}
+
+// ================= By the numbers =================
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: rgba(#fff, 0.14);
+  border: 1px solid rgba(#fff, 0.14);
+  border-radius: $radius;
+  overflow: hidden;
+
+  @include below($bp-lg) { grid-template-columns: repeat(3, 1fr); }
+  @include below($bp-sm) { grid-template-columns: repeat(2, 1fr); }
+
+  &__cell {
+    background: $navy;
+    padding: 26px 16px;
+    text-align: center;
+  }
+
+  &__num {
+    font-size: 27px;
+    font-weight: 600;
+    color: $gold;
+    line-height: 1.2;
+
+    @include below($bp-sm) { font-size: 22px; }
+  }
+
+  &__label {
+    margin-top: 5px;
+    font-size: 12.5px;
+    color: rgba(#fff, 0.72);
+  }
+}
+
+// ================= Luminaries of Cooch Behar =================
+.luminaries {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  @include below($bp-md) { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+}
+
+.luminary {
+  background: $paper;
+  border: 1px solid $line;
+  border-radius: $radius;
+  padding: 26px 24px;
+  box-shadow: $shadow-sm;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover { transform: translateY(-4px); box-shadow: $shadow; }
+
+  &__portrait {
+    width: 74px;
+    height: 74px;
+    margin-bottom: 16px;
+    border-radius: 50%;
+    background: $mist;
+    border: 2px solid $gold;
+    padding: 6px;
+  }
+
+  &__name {
+    font-size: 17px;
+    margin-bottom: 2px;
+  }
+
+  &__years {
+    font-size: 12px;
+    color: $ink-faint;
+    margin-bottom: 12px;
+  }
+
+  &__role {
+    display: inline-block;
+    margin-bottom: 11px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    background: $mist;
+    color: $royal;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  &__text {
+    font-size: 13.5px;
+    color: $ink-soft;
+  }
+}
+
+// ================= Facilities =================
+.facilities {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+
+  @include below($bp-lg) { grid-template-columns: repeat(3, 1fr); }
+  @include below($bp-md) { grid-template-columns: repeat(2, 1fr); }
+  @include below($bp-sm) { grid-template-columns: 1fr; }
+}
+
+.facility {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 18px;
+  background: $paper;
+  border: 1px solid $line;
+  border-left: 3px solid $royal;
+  border-radius: $radius;
+  transition: border-left-color 0.2s ease, transform 0.2s ease;
+
+  &:hover { border-left-color: $gold; transform: translateX(3px); }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: $mist;
+    color: $royal;
+  }
+
+  &__name {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: $navy;
+  }
+
+  &__note {
+    font-size: 12px;
+    color: $ink-faint;
+  }
+}
+
+// ================= Contact =================
+.contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 44px;
+
+  @include below($bp-md) { grid-template-columns: 1fr; gap: 30px; }
+
+  &__list { margin-top: 6px; }
+
+  &__item {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px dashed $line;
+
+    &:last-child { border-bottom: 0; }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: $navy;
+    color: $gold;
+  }
+
+  &__label {
+    font-size: 11.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: $ink-faint;
+  }
+
+  &__value {
+    font-size: 14.5px;
+    color: $navy;
+    font-weight: 500;
+
+    a:hover { color: $royal; }
+  }
+
+  &__map {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px;
+    background: $navy;
+    border-radius: $radius;
+    color: rgba(#fff, 0.85);
+    text-align: center;
+
+    h3 { color: $paper; margin-bottom: 8px; }
+    p  { font-size: 13.5px; margin-bottom: 20px; }
+
+    .btn { align-self: center; }
+  }
+}

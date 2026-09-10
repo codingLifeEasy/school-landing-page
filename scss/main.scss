@@ -1,0 +1,14 @@
+// ==========================================================
+//  Ghoksadanga Pramanik High School (H.S.)
+//  Ghoksadanga, Mathabhanga-IV, Cooch Behar, West Bengal
+//
+//  Build:  npm run build      (one-off, minified)
+//          npm run dev        (watch mode)
+// ==========================================================
+
+@use "variables";
+@use "base";
+@use "header";
+@use "hero";
+@use "sections";
+@use "footer";
