@@ -216,7 +216,6 @@
   100% { opacity: 0; transform: translateY(118vh) rotate(var(--spin)); }
 }
 
-// Anyone who asked for less motion gets the site, not the show.
-@media (prefers-reduced-motion: reduce) {
-  .intro { display: none; }
-}
+// The calm version of this sequence, for readers who asked for less
+// motion, lives in _motion.scss - it has to be declared after these
+// rules to win the cascade.

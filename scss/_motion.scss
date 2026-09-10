@@ -14,6 +14,46 @@
 // ==========================================================
 @media (prefers-reduced-motion: reduce) {
 
+  // ---- the opening sequence, calmed rather than cancelled ----
+  //
+  // Windows set to "Adjust for best performance" reports reduced
+  // motion, so a great many ordinary desktops land here. Hiding the
+  // celebration outright meant those visitors never saw it at all.
+  // Reduced motion should mean less movement, not less content: the
+  // gates stay shut and simply hold, the year fades in flat instead
+  // of tumbling in, the confetti is dropped, and the whole thing
+  // lifts away after a couple of seconds.
+
+  .intro {
+    animation: none !important;
+    background: $navy !important;
+  }
+
+  .intro__leaf { animation: none !important; }               // gates hold
+  .intro__veil { animation: none !important; opacity: 1 !important; }
+  .intro__bit  { display: none !important; }                 // no confetti
+
+  .intro__center {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .intro__ribbon,
+  .intro__label,
+  .intro__bn,
+  .intro__school {
+    animation: calmIn 0.5s ease 0.2s both !important;
+  }
+
+  .intro__years {
+    animation: calmIn 0.6s ease 0.3s both !important;
+    transform: none !important;
+  }
+
+  .intro__skip { animation: calmIn 0.4s ease 0.5s both !important; }
+
+  .intro.is-done { transition: opacity 0.45s ease !important; }
+
   // The banner slideshow ends at opacity 0 - that would leave the
   // masthead with no photograph at all. Hold the first slide open.
   .hero__slide {
@@ -47,4 +87,10 @@
   .kite-sway,
   .bag-bounce,
   .stem-badge { animation: none; }
+}
+
+// a plain fade, used by the calm opening above
+@keyframes calmIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

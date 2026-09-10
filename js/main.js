@@ -431,9 +431,11 @@
      Plays once per browser tab session.
      ========================================================= */
   (function intro() {
+    // Reduced motion does not skip the celebration any more - it plays
+    // a calmer, shorter version of it (the gates hold instead of
+    // swinging, no confetti). See the note in scss/_motion.scss.
     var reduced = window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
 
     try {
       if (sessionStorage.getItem("gphs-intro") === "seen") return;
@@ -443,6 +445,13 @@
     }
 
     var years = new Date().getFullYear() - FOUNDED;
+
+    // the Bengali line reads properly with Bengali numerals
+    function bnDigits(n) {
+      return String(n).replace(/\d/g, function (d) {
+        return "০১২৩৪৫৬৭৮৯".charAt(+d);
+      });
+    }
 
     var el = document.createElement("div");
     el.className = "intro";
@@ -455,7 +464,7 @@
           '<span class="intro__ribbon">1953 &ndash; ' + new Date().getFullYear() + '</span>' +
           '<div class="intro__years">' + years + '</div>' +
           '<div class="intro__label">Years of Learning</div>' +
-          '<div class="intro__bn">' + years + ' বছরের পথচলা</div>' +
+          '<div class="intro__bn">' + bnDigits(years) + ' বছরের পথচলা</div>' +
           '<div class="intro__school">Ghoksadanga Pramanik High School (H.S.)</div>' +
         '</div>' +
       '</div>' +
@@ -477,9 +486,9 @@
     document.body.appendChild(el);
     scrollLock.on();
 
-    /* confetti */
+    /* confetti - skipped entirely in the calm version */
     var colours = ["#ce9915", "#ffd964", "#ffffff", "#5ba3d9", "#ff6f59"];
-    for (var i = 0; i < 46; i++) {
+    for (var i = 0; !reduced && i < 46; i++) {
       var bit = document.createElement("span");
       bit.className = "intro__bit";
       bit.style.setProperty("--x", Math.random() * 100 + "%");
@@ -513,7 +522,8 @@
       }
     });
 
-    // gates finish opening at 3.6s
-    setTimeout(finish, 3800);
+    // full version: the gates finish opening at 3.6s
+    // calm version: nothing swings, so there is no reason to linger
+    setTimeout(finish, reduced ? 2600 : 3800);
   })();
 })();
