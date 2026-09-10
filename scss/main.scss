@@ -14,3 +14,6 @@
 @use "media";
 @use "sections";
 @use "footer";
+
+// must stay last - see the note inside
+@use "motion";

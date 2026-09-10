@@ -130,6 +130,11 @@
   }
 }
 
+@keyframes prompter {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
 @keyframes pulseRing {
   0%   { transform: scale(0.7); opacity: 1; }
   100% { transform: scale(2.1); opacity: 0; }
@@ -167,9 +172,33 @@
 
   &__icon { color: $gold; }
 
+  // ---- news-prompter window ----
+  // The list is duplicated in the markup and the whole track creeps
+  // upward by exactly half its height, so the loop is seamless.
+  &__scroll {
+    position: relative;
+    // NOT flex:1 - the card is a column flexbox, so growing would size
+    // this to the whole duplicated list and nothing would ever be
+    // clipped. A fixed window is the whole point.
+    flex: 0 0 auto;
+    height: 268px;
+    overflow: hidden;
+
+    // soften the top and bottom edges so items appear and leave
+    // rather than being sliced off
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 18px, #000 calc(100% - 22px), transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 18px, #000 calc(100% - 22px), transparent 100%);
+  }
+
   &__list {
-    flex: 1;
     padding: 6px 18px;
+    animation: prompter 34s linear infinite;
+  }
+
+  // let the reader stop it to actually read something
+  &__scroll:hover &__list,
+  &__scroll:focus-within &__list {
+    animation-play-state: paused;
   }
 
   &__item {
@@ -260,7 +289,7 @@
   }
 }
 
-// ================= Founder / statue feature =================
+// ================= Founder =================
 .founder {
   position: relative;
   background:
@@ -282,13 +311,6 @@
       gap: 30px;
       text-align: center;
     }
-  }
-
-  &__statue {
-    justify-self: center;
-    width: 260px;
-    max-width: 100%;
-    filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.45));
   }
 
   &__label {
@@ -324,6 +346,59 @@
     color: $paper;
 
     @include below($bp-md) { text-align: left; }
+  }
+}
+
+// A typographic marker where a portrait would go - there is no
+// photograph of the founder to use.
+.foundmark {
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 30px 26px;
+  border: 1px solid rgba($gold, 0.35);
+  border-radius: $radius-lg;
+  background: rgba(#fff, 0.04);
+
+  &__since {
+    font-size: 11.5px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(#fff, 0.55);
+  }
+
+  &__year {
+    font-family: $font-head;
+    font-size: 74px;
+    font-weight: 700;
+    line-height: 1;
+    color: $gold;
+    margin: 6px 0 2px;
+    text-shadow: 0 3px 0 rgba(0, 0, 0, 0.28);
+
+    @include below($bp-sm) { font-size: 58px; }
+  }
+
+  &__day {
+    font-size: 13px;
+    color: $gold-200;
+    letter-spacing: 0.08em;
+  }
+
+  &__rule {
+    width: 46px;
+    height: 2px;
+    margin: 16px 0 12px;
+    background: rgba($gold, 0.6);
+  }
+
+  &__by {
+    max-width: 190px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: rgba(#fff, 0.6);
   }
 }
 

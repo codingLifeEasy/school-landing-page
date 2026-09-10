@@ -1,0 +1,50 @@
+@use "variables" as *;
+
+// ==========================================================
+//  Reduced motion
+//
+//  This partial is loaded LAST on purpose. The blanket rule in
+//  _base.scss squashes every animation to 0.001ms, which does not
+//  stop an animation - it jumps it to its FINAL frame. Several of
+//  ours end invisible or off-screen, so without these overrides the
+//  page would lose its photographs and its notices entirely.
+//
+//  Anything added here must come after the rule it is correcting,
+//  hence: keep new overrides in this file, not beside the component.
+// ==========================================================
+@media (prefers-reduced-motion: reduce) {
+
+  // The banner slideshow ends at opacity 0 - that would leave the
+  // masthead with no photograph at all. Hold the first slide open.
+  .hero__slide {
+    animation: none;
+    opacity: 0;
+    transform: none;
+
+    &:first-child { opacity: 1; }
+  }
+
+  // The prompter ends translated to -50%, showing only the duplicated
+  // half of the list. Hold it at the top and let the reader scroll.
+  .board__list {
+    animation: none;
+    transform: none;
+  }
+  .board__scroll {
+    overflow-y: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  // The horizontal ticker likewise ends mid-slide.
+  .ticker__track { animation: none; transform: none; }
+
+  // Decorative only - just stop them where they are.
+  .hcard { animation: none; transform: rotate(-1.6deg); }
+  .sun-pulse,
+  .swing-group,
+  .seesaw-group,
+  .kite-sway,
+  .bag-bounce,
+  .stem-badge { animation: none; }
+}

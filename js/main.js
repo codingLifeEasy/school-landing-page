@@ -85,7 +85,7 @@
      fold, and a timeout guarantees everything is shown even if the
      observer never fires. The page can never be left blank. */
   var candidates = document.querySelectorAll(
-    ".board, .about__body, .about__facts, .founder__statue, .founder__text," +
+    ".board, .about__body, .about__facts, .foundmark, .founder__text," +
       ".principal__card, .principal__body, .luminary, .facility, .stats__cell"
   );
 
@@ -202,6 +202,108 @@
     restart();
     root.addEventListener("mouseenter", function () { clearInterval(timer); });
     root.addEventListener("mouseleave", restart);
+  })();
+
+  /* =========================================================
+     Hero card - turns itself over every few seconds
+     ========================================================= */
+  (function heroCard() {
+    var card = document.getElementById("heroCard");
+    var capEl = document.getElementById("heroCardCap");
+    var barEl = document.getElementById("heroCardBar");
+    if (!card || !capEl || !barEl) return;
+
+    var shots = card.querySelectorAll(".hcard__img");
+    if (shots.length < 2) return;
+
+    var HOLD = 4200;
+    var at = 0;
+    var timer = null;
+    var started = 0;
+    var raf = null;
+
+    function show(next) {
+      shots[at].classList.remove("is-on");
+      at = next % shots.length;
+      shots[at].classList.add("is-on");
+      capEl.textContent = shots[at].getAttribute("data-cap") || "";
+    }
+
+    function sweep(now) {
+      var pct = Math.min((now - started) / HOLD, 1) * 100;
+      barEl.style.width = pct + "%";
+      raf = window.requestAnimationFrame(sweep);
+    }
+
+    function run() {
+      started = performance.now();
+      if (raf) cancelAnimationFrame(raf);
+      raf = window.requestAnimationFrame(sweep);
+      timer = setTimeout(function () {
+        show(at + 1);
+        run();
+      }, HOLD);
+    }
+
+    function stop() {
+      clearTimeout(timer);
+      if (raf) cancelAnimationFrame(raf);
+    }
+
+    run();
+    card.addEventListener("mouseenter", stop);
+    card.addEventListener("mouseleave", run);
+
+    // don't burn frames while the tab is in the background
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop(); else run();
+    });
+  })();
+
+  /* =========================================================
+     Stats count up when they scroll into view
+     ========================================================= */
+  (function counters() {
+    var cells = document.querySelectorAll(".stats__num[data-count]");
+    if (!cells.length) return;
+
+    // the final figures are already in the markup, so for anyone who
+    // asked for less motion we simply leave them alone
+    if (window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    function run(el) {
+      var target = parseInt(el.getAttribute("data-count"), 10);
+      if (isNaN(target)) return;
+
+      // years read better counting up from a nearby year than from zero
+      var from = target > 1900 ? target - 60 : 0;
+      var dur = 1100;
+      var t0 = performance.now();
+
+      (function step(now) {
+        var p = Math.min((now - t0) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(from + (target - from) * eased);
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      })(t0);
+    }
+
+    if (!("IntersectionObserver" in window)) return; // numbers are already in the HTML
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            run(e.target);
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    Array.prototype.forEach.call(cells, function (c) { io.observe(c); });
   })();
 
   /* =========================================================

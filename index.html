@@ -125,70 +125,18 @@
       </div>
     </div>
 
-    <!-- ---------------------------------------------------------
-         THE FOUNDER'S BUST — the visual hook of this site.
-         A stylised stone monument, not a portrait likeness.
-         Replace with a photograph of the actual campus statue
-         when one is available.
-    ---------------------------------------------------------- -->
-    <svg class="hero__statue" viewBox="0 0 300 430" role="img" aria-label="Memorial bust of the school's founder, Sri Pramanik Barman, on its plinth">
-      <defs>
-        <linearGradient id="stone" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#e2e7f4"/>
-          <stop offset="0.5" stop-color="#b9c4dd"/>
-          <stop offset="1" stop-color="#8996b8"/>
-        </linearGradient>
-        <linearGradient id="plinth" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#aab5d0"/>
-          <stop offset="0.55" stop-color="#8b98ba"/>
-          <stop offset="1" stop-color="#6d7a9c"/>
-        </linearGradient>
-        <radialGradient id="halo">
-          <stop offset="0" stop-color="#ce9915" stop-opacity=".55"/>
-          <stop offset="1" stop-color="#ce9915" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-
-      <!-- glow behind the bust -->
-      <circle class="statue__glow" cx="150" cy="180" r="118" fill="url(#halo)"/>
-
-      <!-- ---- plinth ---- -->
-      <rect x="58" y="398" width="184" height="24" rx="3" fill="#6d7a9c"/>
-      <path d="M78 398h144l-10-96H88z" fill="url(#plinth)"/>
-      <rect x="80" y="288" width="140" height="16" rx="2" fill="#aab5d0"/>
-      <!-- memorial plaque -->
-      <rect x="111" y="330" width="78" height="40" rx="2" fill="#ce9915" opacity=".9"/>
-      <path d="M122 344h56M122 352h56M132 360h36" stroke="#0f2147" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
-
-      <!-- ---- bust ---- -->
-      <path d="M92 288c3-46 26-68 58-68s55 22 58 68z" fill="url(#stone)"/>
-      <!-- shawl drape -->
-      <path d="M122 232c7 16 11 32 11 56M178 232c-7 16-11 32-11 56" stroke="#7d8aab" stroke-width="3" fill="none" stroke-linecap="round" opacity=".65"/>
-      <path d="M150 238v50" stroke="#7d8aab" stroke-width="2.2" opacity=".45"/>
-      <!-- collar -->
-      <path d="M133 226l17 16 17-16" fill="none" stroke="#7d8aab" stroke-width="3" stroke-linecap="round"/>
-      <!-- neck -->
-      <path d="M134 194h32v32h-32z" fill="#a9b4d0"/>
-      <!-- head -->
-      <ellipse cx="150" cy="164" rx="36" ry="41" fill="url(#stone)"/>
-      <!-- ears -->
-      <ellipse cx="115" cy="168" rx="6" ry="10" fill="#a9b4d0"/>
-      <ellipse cx="185" cy="168" rx="6" ry="10" fill="#a9b4d0"/>
-      <!-- hair -->
-      <path d="M114 150c0-30 17-44 36-44s36 14 36 44c0 0 2-14-6-22-7 8-17 10-30 10s-23-2-30-10c-8 8-6 22-6 22z" fill="#7d8aab"/>
-      <!-- brows -->
-      <path d="M126 152c5-3 12-3 17-1M157 151c5-2 12-2 17 1" stroke="#6f7c9e" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-      <!-- spectacles -->
-      <g fill="none" stroke="#ce9915" stroke-width="2.6">
-        <circle cx="135" cy="170" r="11"/>
-        <circle cx="165" cy="170" r="11"/>
-        <path d="M146 170h8M124 167l-8-2M176 167l8-2" stroke-linecap="round"/>
-      </g>
-      <!-- nose, moustache, mouth -->
-      <path d="M150 174v10l5 3" fill="none" stroke="#8f9bbb" stroke-width="2.2" stroke-linecap="round"/>
-      <path d="M134 194c6-5 26-5 32 0-6 6-26 6-32 0z" fill="#7d8aab"/>
-      <path d="M143 203h14" stroke="#8f9bbb" stroke-width="2.2" stroke-linecap="round"/>
-    </svg>
+    <!-- A card that turns itself over: real photographs of the school,
+         each with a caption and a progress bar. -->
+    <figure class="hcard" id="heroCard">
+      <div class="hcard__stack">
+        <img class="hcard__img is-on" src="assets/img/saraswati-puja-thumb.jpg" alt="The Saraswati idol decorated with marigolds" data-cap="Saraswati Puja on the school grounds" width="480" height="360">
+        <img class="hcard__img" src="assets/img/excursion-hills-thumb.jpg" alt="Students and teachers with the school banner in the hills" data-cap="Biological excursion to the hills" width="480" height="360">
+        <img class="hcard__img" src="assets/img/sports-pyramid-thumb.jpg" alt="Students forming a human pyramid" data-cap="Annual sports and cultural programme" width="480" height="360">
+        <img class="hcard__img" src="assets/img/tree-plantation-thumb.jpg" alt="Students planting a sapling" data-cap="Planting day, 14 July 2026" width="480" height="360">
+      </div>
+      <figcaption class="hcard__cap" id="heroCardCap">Saraswati Puja on the school grounds</figcaption>
+      <span class="hcard__bar"><i id="heroCardBar"></i></span>
+    </figure>
   </div>
 </section>
 
@@ -261,12 +209,22 @@
           <svg class="board__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
           Academic Notices
         </h3>
-        <ul class="board__list">
+        <div class="board__scroll">
+          <ul class="board__list">
           <li class="board__item"><a href="#contact">Class routine for the current session<span class="board__tag">New</span></a><span class="board__date">Available at the school office</span></li>
           <li class="board__item"><a href="#contact">Unit test schedule &mdash; Classes V to X</a><span class="board__date">Announced on the notice board</span></li>
           <li class="board__item"><a href="#contact">Madhyamik &amp; Higher Secondary registration</a><span class="board__date">As per WBBSE / WBCHSE calendar</span></li>
           <li class="board__item"><a href="#contact">Distribution of textbooks and uniforms</a><span class="board__date">Contact the class teacher</span></li>
-        </ul>
+          <li class="board__item"><a href="#contact">Parent&ndash;teacher meeting &mdash; dates on the school board</a><span class="board__date">Held through the session</span></li>
+          <li class="board__item"><a href="#facilities">Library and computer room open through school hours</a><span class="board__date">All classes</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#contact">Class routine for the current session<span class="board__tag">New</span></a><span class="board__date">Available at the school office</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#contact">Unit test schedule &mdash; Classes V to X</a><span class="board__date">Announced on the notice board</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#contact">Madhyamik &amp; Higher Secondary registration</a><span class="board__date">As per WBBSE / WBCHSE calendar</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#contact">Distribution of textbooks and uniforms</a><span class="board__date">Contact the class teacher</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#contact">Parent&ndash;teacher meeting &mdash; dates on the school board</a><span class="board__date">Held through the session</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#facilities">Library and computer room open through school hours</a><span class="board__date">All classes</span></li>
+          </ul>
+        </div>
         <div class="board__foot"><a href="#contact">Enquire at the office &rarr;</a></div>
       </article>
 
@@ -275,12 +233,22 @@
           <svg class="board__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
           News &amp; Achievements
         </h3>
-        <ul class="board__list">
+        <div class="board__scroll">
+          <ul class="board__list">
           <li class="board__item"><a href="#gallery">Sahadeb Barman (XI) first in district badminton<span class="board__tag">New</span></a><span class="board__date">8 September 2026</span></li>
           <li class="board__item"><a href="#gallery">Rajdeep Das (XII) second in district badminton</a><span class="board__date">8 September 2026</span></li>
           <li class="board__item"><a href="#gallery">Teachers&rsquo; Day observed &mdash; students took the classes</a><span class="board__date">5 September 2026</span></li>
           <li class="board__item"><a href="#gallery">Tree plantation drive on the school grounds</a><span class="board__date">14 July 2026</span></li>
-        </ul>
+          <li class="board__item"><a href="#notices">Essay competition &mdash; &ldquo;তোমার প্রিয় শিক্ষক / শিক্ষিকা&rdquo;</a><span class="board__date">3 September 2026</span></li>
+          <li class="board__item"><a href="#gallery">Saraswati Puja observed on the school grounds</a><span class="board__date">Kept every year</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#gallery">Sahadeb Barman (XI) first in district badminton<span class="board__tag">New</span></a><span class="board__date">8 September 2026</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#gallery">Rajdeep Das (XII) second in district badminton</a><span class="board__date">8 September 2026</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#gallery">Teachers&rsquo; Day observed &mdash; students took the classes</a><span class="board__date">5 September 2026</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#gallery">Tree plantation drive on the school grounds</a><span class="board__date">14 July 2026</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#notices">Essay competition &mdash; &ldquo;তোমার প্রিয় শিক্ষক / শিক্ষিকা&rdquo;</a><span class="board__date">3 September 2026</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#gallery">Saraswati Puja observed on the school grounds</a><span class="board__date">Kept every year</span></li>
+          </ul>
+        </div>
         <div class="board__foot"><a href="#gallery">See the photographs &rarr;</a></div>
       </article>
 
@@ -289,12 +257,22 @@
           <svg class="board__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
           Admission
         </h3>
-        <ul class="board__list">
+        <div class="board__scroll">
+          <ul class="board__list">
           <li class="board__item"><a href="#academics">Class V admission &mdash; new session<span class="board__tag">Open</span></a><span class="board__date">Forms available at the office</span></li>
           <li class="board__item"><a href="#academics">Class XI streams: Science &amp; Arts</a><span class="board__date">After Madhyamik results</span></li>
           <li class="board__item"><a href="#academics">Documents required for admission</a><span class="board__date">Birth certificate, marksheet, Aadhaar</span></li>
           <li class="board__item"><a href="#contact">Hostel accommodation enquiries</a><span class="board__date">Limited seats &mdash; contact office</span></li>
-        </ul>
+          <li class="board__item"><a href="#contact">Transfer certificates and mark sheets from the office</a><span class="board__date">Working days</span></li>
+          <li class="board__item"><a href="#contact">Enquiries welcome from the surrounding villages</a><span class="board__date">Mathabhanga &ndash; IV</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#academics">Class V admission &mdash; new session<span class="board__tag">Open</span></a><span class="board__date">Forms available at the office</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#academics">Class XI streams: Science &amp; Arts</a><span class="board__date">After Madhyamik results</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#academics">Documents required for admission</a><span class="board__date">Birth certificate, marksheet, Aadhaar</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#contact">Hostel accommodation enquiries</a><span class="board__date">Limited seats &mdash; contact office</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#contact">Transfer certificates and mark sheets from the office</a><span class="board__date">Working days</span></li>
+          <li class="board__item" aria-hidden="true"><a tabindex="-1" href="#contact">Enquiries welcome from the surrounding villages</a><span class="board__date">Mathabhanga &ndash; IV</span></li>
+          </ul>
+        </div>
         <div class="board__foot"><a href="#contact">Call +91 94341 78809 &rarr;</a></div>
       </article>
 
@@ -328,47 +306,19 @@
   </div>
 </section>
 
-<!-- ==================== FOUNDER (statue feature) ==================== -->
+<!-- ==================== FOUNDER ==================== -->
 <section class="founder section" id="founder">
   <div class="container founder__inner">
 
-    <svg class="founder__statue" viewBox="0 0 300 430" role="img" aria-label="Memorial bust of Sri Pramanik Barman on its plinth">
-      <defs>
-        <linearGradient id="stone2" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#e2e7f4"/>
-          <stop offset="0.5" stop-color="#b9c4dd"/>
-          <stop offset="1" stop-color="#8996b8"/>
-        </linearGradient>
-        <linearGradient id="plinth2" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#aab5d0"/>
-          <stop offset="0.55" stop-color="#8b98ba"/>
-          <stop offset="1" stop-color="#6d7a9c"/>
-        </linearGradient>
-      </defs>
-      <rect x="58" y="398" width="184" height="24" rx="3" fill="#6d7a9c"/>
-      <path d="M78 398h144l-10-96H88z" fill="url(#plinth2)"/>
-      <rect x="80" y="288" width="140" height="16" rx="2" fill="#aab5d0"/>
-      <rect x="111" y="330" width="78" height="40" rx="2" fill="#ce9915" opacity=".9"/>
-      <path d="M122 344h56M122 352h56M132 360h36" stroke="#0f2147" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
-      <path d="M92 288c3-46 26-68 58-68s55 22 58 68z" fill="url(#stone2)"/>
-      <path d="M122 232c7 16 11 32 11 56M178 232c-7 16-11 32-11 56" stroke="#7d8aab" stroke-width="3" fill="none" stroke-linecap="round" opacity=".65"/>
-      <path d="M150 238v50" stroke="#7d8aab" stroke-width="2.2" opacity=".45"/>
-      <path d="M133 226l17 16 17-16" fill="none" stroke="#7d8aab" stroke-width="3" stroke-linecap="round"/>
-      <path d="M134 194h32v32h-32z" fill="#a9b4d0"/>
-      <ellipse cx="150" cy="164" rx="36" ry="41" fill="url(#stone2)"/>
-      <ellipse cx="115" cy="168" rx="6" ry="10" fill="#a9b4d0"/>
-      <ellipse cx="185" cy="168" rx="6" ry="10" fill="#a9b4d0"/>
-      <path d="M114 150c0-30 17-44 36-44s36 14 36 44c0 0 2-14-6-22-7 8-17 10-30 10s-23-2-30-10c-8 8-6 22-6 22z" fill="#7d8aab"/>
-      <path d="M126 152c5-3 12-3 17-1M157 151c5-2 12-2 17 1" stroke="#6f7c9e" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-      <g fill="none" stroke="#ce9915" stroke-width="2.6">
-        <circle cx="135" cy="170" r="11"/>
-        <circle cx="165" cy="170" r="11"/>
-        <path d="M146 170h8M124 167l-8-2M176 167l8-2" stroke-linecap="round"/>
-      </g>
-      <path d="M150 174v10l5 3" fill="none" stroke="#8f9bbb" stroke-width="2.2" stroke-linecap="round"/>
-      <path d="M134 194c6-5 26-5 32 0-6 6-26 6-32 0z" fill="#7d8aab"/>
-      <path d="M143 203h14" stroke="#8f9bbb" stroke-width="2.2" stroke-linecap="round"/>
-    </svg>
+    <!-- A typographic marker in place of a portrait: we have no
+         photograph of the founder himself. -->
+    <div class="foundmark">
+      <span class="foundmark__since">Founded</span>
+      <span class="foundmark__year">1953</span>
+      <span class="foundmark__day">10 March</span>
+      <span class="foundmark__rule"></span>
+      <span class="foundmark__by">by a farmer, for his neighbours&rsquo; children</span>
+    </div>
 
     <div class="founder__text">
       <div class="founder__label">The Founder</div>
@@ -391,11 +341,11 @@
   <div class="container">
     <h2 class="section-title section-title--center section-title--light">At a Glance</h2>
     <div class="stats">
-      <div class="stats__cell"><div class="stats__num">1953</div><div class="stats__label">Year of Establishment</div></div>
-      <div class="stats__cell"><div class="stats__num">73</div><div class="stats__label">Years of Service</div></div>
+      <div class="stats__cell"><div class="stats__num" data-count="1953">1953</div><div class="stats__label">Year of Establishment</div></div>
+      <div class="stats__cell"><div class="stats__num" data-count="73">73</div><div class="stats__label">Years of Service</div></div>
       <div class="stats__cell"><div class="stats__num">V&ndash;XII</div><div class="stats__label">Classes Offered</div></div>
       <div class="stats__cell"><div class="stats__num">Co-Ed</div><div class="stats__label">Boys &amp; Girls Together</div></div>
-      <div class="stats__cell"><div class="stats__num">7</div><div class="stats__label">Campus Facilities</div></div>
+      <div class="stats__cell"><div class="stats__num" data-count="7">7</div><div class="stats__label">Campus Facilities</div></div>
     </div>
   </div>
 </section>
