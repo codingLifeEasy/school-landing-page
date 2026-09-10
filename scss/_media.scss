@@ -12,11 +12,25 @@
   display: block;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(100deg, #e6ebf5 30%, #f4f7fd 50%, #e6ebf5 70%);
-  background-size: 220% 100%;
-  animation: shimmer 1.4s linear infinite;
+  background: $mist;
 
-  // faint school crest watermark while we wait
+  // The sweep is a transform on a pseudo-element rather than an
+  // animated background-position. Moving a layer is composited;
+  // repainting a gradient thirteen times over is not, and that is
+  // what makes the gallery flicker on a phone.
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -60%;
+    width: 60%;
+    background: linear-gradient(100deg, transparent, rgba(#fff, 0.85), transparent);
+    animation: shimmer 1.5s linear infinite;
+    will-change: transform;
+  }
+
+  // faint crest watermark while we wait
   &::after {
     content: "";
     position: absolute;
@@ -28,8 +42,7 @@
   }
 
   &.is-loaded {
-    animation: none;
-    background: $mist;
+    &::before { display: none; }
     &::after { display: none; }
   }
 
@@ -48,8 +61,8 @@
 }
 
 @keyframes shimmer {
-  from { background-position: 140% 0; }
-  to   { background-position: -40% 0; }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(280%, 0, 0); }
 }
 
 // fixed aspect boxes
@@ -231,4 +244,12 @@
   to   { opacity: 1; transform: none; }
 }
 
-body.is-locked { overflow: hidden; }
+// Pinned rather than just overflow:hidden - see the note on scrollLock
+// in js/main.js. The inline `top` is set by the script.
+body.is-locked {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+}

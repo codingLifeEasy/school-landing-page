@@ -131,6 +131,42 @@
   var FOUNDED = 1953;
 
   /* =========================================================
+     Scroll lock
+     `overflow: hidden` on <body> does not hold on mobile Safari -
+     the page keeps scrolling behind the overlay and comes back at
+     whatever offset it drifted to. Pinning the body with
+     position:fixed and restoring the offset afterwards is the only
+     thing that behaves the same everywhere.
+     ========================================================= */
+  var scrollLock = (function () {
+    var saved = 0;
+    var held = false;
+
+    return {
+      on: function () {
+        if (held) return;
+        saved = window.scrollY || window.pageYOffset || 0;
+        document.body.style.top = -saved + "px";
+        document.body.classList.add("is-locked");
+        held = true;
+      },
+      // toTop: land at the top of the page instead of where we were
+      off: function (toTop) {
+        if (!held) return;
+        document.body.classList.remove("is-locked");
+        document.body.style.top = "";
+        held = false;
+
+        // jump, never smooth-scroll, or the reader watches the page fly
+        var behaviour = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = "auto";
+        window.scrollTo(0, toTop ? 0 : saved);
+        document.documentElement.style.scrollBehavior = behaviour;
+      }
+    };
+  })();
+
+  /* =========================================================
      Lazy images
      Each photo sits in a .ph frame that shimmers until the file
      arrives, then fades in. Images already in cache fire no load
@@ -347,7 +383,7 @@
       current = list.indexOf(tile);
       paint(list[current]);
       box.classList.add("is-open");
-      document.body.classList.add("is-locked");
+      scrollLock.on();
     }
 
     function paint(tile) {
@@ -366,7 +402,7 @@
 
     function close() {
       box.classList.remove("is-open");
-      document.body.classList.remove("is-locked");
+      scrollLock.off(false); // back to the tile the reader came from
       img.src = "";
     }
 
@@ -431,8 +467,15 @@
     el.querySelector(".intro__leaf--l").style.backgroundImage = gate;
     el.querySelector(".intro__leaf--r").style.backgroundImage = gate;
 
+    // The celebration is an opening, so it must open ONTO the top of
+    // the page. Without this the browser restores whatever offset the
+    // reader was last at, and the gates lift onto the middle - or the
+    // very bottom - of the site.
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+
     document.body.appendChild(el);
-    document.body.classList.add("is-locked");
+    scrollLock.on();
 
     /* confetti */
     var colours = ["#ce9915", "#ffd964", "#ffffff", "#5ba3d9", "#ff6f59"];
@@ -454,9 +497,10 @@
       if (finished) return;
       finished = true;
       el.classList.add("is-done");
-      document.body.classList.remove("is-locked");
+      scrollLock.off(true); // always hand the reader the top of the page
       setTimeout(function () {
         if (el.parentNode) el.parentNode.removeChild(el);
+        if ("scrollRestoration" in history) history.scrollRestoration = "auto";
       }, 700);
     }
 

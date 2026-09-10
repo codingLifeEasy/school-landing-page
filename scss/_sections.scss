@@ -130,9 +130,11 @@
   }
 }
 
+// translate3d, not translateY - keeps the track on its own composited
+// layer so the phone is not repainting text every frame
 @keyframes prompter {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(0, -50%, 0); }
 }
 
 @keyframes pulseRing {

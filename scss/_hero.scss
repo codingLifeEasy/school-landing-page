@@ -22,8 +22,11 @@
     background-size: cover;
     background-position: center;
     opacity: 0;
-    will-change: transform, opacity;
+    backface-visibility: hidden;
     animation: heroCycle 32s ease-in-out infinite;
+
+    // no will-change here: four full-bleed layers each promoted to its
+    // own GPU texture is what makes phones flicker
 
     &:nth-child(1) { animation-delay: 0s; }
     &:nth-child(2) { animation-delay: 8s; }
@@ -212,6 +215,31 @@
   100% { opacity: 0; transform: scale(1.06); }
 }
 
+// On a phone, continuously rescaling a full-bleed photograph is the
+// most expensive thing on the page and the likeliest source of
+// flicker. Keep the movement, drop the zoom, and halve the number of
+// layers being composited.
+@keyframes heroFade {
+  0%   { opacity: 0; }
+  5%   { opacity: 1; }
+  50%  { opacity: 1; }
+  56%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@media (max-width: $bp-md) {
+  .hero__slide {
+    animation-name: heroFade;
+    animation-duration: 16s;
+    transform: none;
+
+    &:nth-child(1) { animation-delay: 0s; }
+    &:nth-child(2) { animation-delay: 8s; }
+    &:nth-child(3),
+    &:nth-child(4) { display: none; }
+  }
+}
+
 // ================= Rolling notice ticker =================
 .ticker {
   display: flex;
@@ -268,6 +296,6 @@
 }
 
 @keyframes tickerScroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
