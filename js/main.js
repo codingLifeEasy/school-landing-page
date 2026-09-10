@@ -127,4 +127,247 @@
   /* ---------- Footer year ---------- */
   var year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
+
+  var FOUNDED = 1953;
+
+  /* =========================================================
+     Lazy images
+     Each photo sits in a .ph frame that shimmers until the file
+     arrives, then fades in. Images already in cache fire no load
+     event, so complete images are marked straight away.
+     ========================================================= */
+  function watchImages() {
+    var frames = document.querySelectorAll(".ph");
+    Array.prototype.forEach.call(frames, function (frame) {
+      var img = frame.querySelector("img");
+      if (!img) return;
+
+      var done = function () { frame.classList.add("is-loaded"); };
+
+      if (img.complete && img.naturalWidth > 0) {
+        done();
+      } else {
+        img.addEventListener("load", done, { once: true });
+        // a broken file should not leave the frame shimmering for ever
+        img.addEventListener("error", done, { once: true });
+      }
+    });
+  }
+  watchImages();
+
+  /* =========================================================
+     Notice spotlight - rotates the newest announcements
+     ========================================================= */
+  (function spotlight() {
+    var root = document.getElementById("spotlight");
+    var dotWrap = document.getElementById("spotlightDots");
+    if (!root || !dotWrap) return;
+
+    var items = root.querySelectorAll(".spotlight__item");
+    if (items.length < 2) return;
+
+    var index = 0;
+    var timer = null;
+    var DELAY = 5200;
+
+    var dots = [];
+    Array.prototype.forEach.call(items, function (_, i) {
+      var b = document.createElement("button");
+      b.className = "spotlight__dot" + (i === 0 ? " is-active" : "");
+      b.type = "button";
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-label", "Notice " + (i + 1));
+      b.addEventListener("click", function () {
+        show(i);
+        restart();
+      });
+      dotWrap.appendChild(b);
+      dots.push(b);
+    });
+
+    function show(next) {
+      items[index].classList.remove("is-active");
+      dots[index].classList.remove("is-active");
+      index = (next + items.length) % items.length;
+      items[index].classList.add("is-active");
+      dots[index].classList.add("is-active");
+    }
+
+    function tick() { show(index + 1); }
+    function restart() {
+      clearInterval(timer);
+      timer = setInterval(tick, DELAY);
+    }
+
+    restart();
+    root.addEventListener("mouseenter", function () { clearInterval(timer); });
+    root.addEventListener("mouseleave", restart);
+  })();
+
+  /* =========================================================
+     Gallery - filter chips and lightbox
+     ========================================================= */
+  (function gallery() {
+    var grid = document.getElementById("galleryGrid");
+    var filters = document.getElementById("galleryFilters");
+    var box = document.getElementById("lightbox");
+    if (!grid || !box) return;
+
+    var tiles = Array.prototype.slice.call(grid.querySelectorAll(".tile"));
+    var img = document.getElementById("lightboxImg");
+    var cap = document.getElementById("lightboxCap");
+    var current = 0;
+
+    /* ---- filters ---- */
+    if (filters) {
+      filters.addEventListener("click", function (e) {
+        var chip = e.target.closest(".gallery__chip");
+        if (!chip) return;
+
+        var want = chip.getAttribute("data-filter");
+        filters.querySelectorAll(".gallery__chip").forEach(function (c) {
+          c.classList.toggle("is-active", c === chip);
+        });
+        tiles.forEach(function (t) {
+          var show = want === "all" || t.getAttribute("data-cat") === want;
+          t.classList.toggle("is-hidden", !show);
+        });
+      });
+    }
+
+    /* ---- lightbox ---- */
+    function visibleTiles() {
+      return tiles.filter(function (t) { return !t.classList.contains("is-hidden"); });
+    }
+
+    function open(tile) {
+      var list = visibleTiles();
+      current = list.indexOf(tile);
+      paint(list[current]);
+      box.classList.add("is-open");
+      document.body.classList.add("is-locked");
+    }
+
+    function paint(tile) {
+      if (!tile) return;
+      img.src = tile.getAttribute("data-full");
+      img.alt = tile.querySelector("img") ? tile.querySelector("img").alt : "";
+      cap.innerHTML = tile.getAttribute("data-cap") || "";
+    }
+
+    function step(dir) {
+      var list = visibleTiles();
+      if (!list.length) return;
+      current = (current + dir + list.length) % list.length;
+      paint(list[current]);
+    }
+
+    function close() {
+      box.classList.remove("is-open");
+      document.body.classList.remove("is-locked");
+      img.src = "";
+    }
+
+    grid.addEventListener("click", function (e) {
+      var tile = e.target.closest(".tile");
+      if (tile) open(tile);
+    });
+
+    document.getElementById("lbClose").addEventListener("click", close);
+    document.getElementById("lbPrev").addEventListener("click", function () { step(-1); });
+    document.getElementById("lbNext").addEventListener("click", function () { step(1); });
+    box.addEventListener("click", function (e) { if (e.target === box) close(); });
+
+    document.addEventListener("keydown", function (e) {
+      if (!box.classList.contains("is-open")) return;
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowLeft") step(-1);
+      else if (e.key === "ArrowRight") step(1);
+    });
+  })();
+
+  /* =========================================================
+     Opening sequence
+     The gate swings open on the school's Nth year. Built entirely
+     in JS, so if this fails the visitor simply gets the site.
+     Plays once per browser tab session.
+     ========================================================= */
+  (function intro() {
+    var reduced = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    try {
+      if (sessionStorage.getItem("gphs-intro") === "seen") return;
+      sessionStorage.setItem("gphs-intro", "seen");
+    } catch (err) {
+      // private mode - just play it
+    }
+
+    var years = new Date().getFullYear() - FOUNDED;
+
+    var el = document.createElement("div");
+    el.className = "intro";
+    el.innerHTML =
+      '<div class="intro__leaf intro__leaf--l"></div>' +
+      '<div class="intro__leaf intro__leaf--r"></div>' +
+      '<div class="intro__veil"></div>' +
+      '<div class="intro__center">' +
+        '<div>' +
+          '<span class="intro__ribbon">1953 &ndash; ' + new Date().getFullYear() + '</span>' +
+          '<div class="intro__years">' + years + '</div>' +
+          '<div class="intro__label">Years of Learning</div>' +
+          '<div class="intro__bn">' + years + ' বছরের পথচলা</div>' +
+          '<div class="intro__school">Ghoksadanga Pramanik High School (H.S.)</div>' +
+        '</div>' +
+      '</div>' +
+      '<button class="intro__skip" type="button">Skip &rsaquo;</button>';
+
+    // Set on the elements themselves so the path resolves against the
+    // page, which keeps it correct under a project sub-path too.
+    var gate = "url('assets/img/gate-wide.jpg')";
+    el.querySelector(".intro__leaf--l").style.backgroundImage = gate;
+    el.querySelector(".intro__leaf--r").style.backgroundImage = gate;
+
+    document.body.appendChild(el);
+    document.body.classList.add("is-locked");
+
+    /* confetti */
+    var colours = ["#ce9915", "#ffd964", "#ffffff", "#5ba3d9", "#ff6f59"];
+    for (var i = 0; i < 46; i++) {
+      var bit = document.createElement("span");
+      bit.className = "intro__bit";
+      bit.style.setProperty("--x", Math.random() * 100 + "%");
+      bit.style.setProperty("--w", (5 + Math.random() * 6).toFixed(1) + "px");
+      bit.style.setProperty("--h", (9 + Math.random() * 9).toFixed(1) + "px");
+      bit.style.setProperty("--c", colours[i % colours.length]);
+      bit.style.setProperty("--dur", (2.6 + Math.random() * 2).toFixed(2) + "s");
+      bit.style.setProperty("--delay", (0.35 + Math.random() * 1.5).toFixed(2) + "s");
+      bit.style.setProperty("--spin", Math.round(360 + Math.random() * 720) + "deg");
+      el.appendChild(bit);
+    }
+
+    var finished = false;
+    function finish() {
+      if (finished) return;
+      finished = true;
+      el.classList.add("is-done");
+      document.body.classList.remove("is-locked");
+      setTimeout(function () {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }, 700);
+    }
+
+    el.querySelector(".intro__skip").addEventListener("click", finish);
+    el.addEventListener("click", finish);
+    document.addEventListener("keydown", function onKey(e) {
+      if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+        document.removeEventListener("keydown", onKey);
+        finish();
+      }
+    });
+
+    // gates finish opening at 3.6s
+    setTimeout(finish, 3800);
+  })();
 })();

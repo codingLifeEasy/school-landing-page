@@ -1,5 +1,140 @@
 @use "variables" as *;
 
+// ================= Notice spotlight =================
+// One notice at a time, rotating like a hoarding, so the newest
+// news from the school is the loudest thing on the page.
+.spotlight {
+  position: relative;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 0;
+  margin-bottom: 34px;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  background: linear-gradient(115deg, $navy 0%, $navy-700 60%, $royal 100%);
+  box-shadow: $shadow-lg;
+
+  @include below($bp-md) { grid-template-columns: 1fr; }
+
+  &__flag {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 22px 12px;
+    background: $gold;
+    color: $navy;
+    text-align: center;
+
+    @include below($bp-md) { flex-direction: row; padding: 12px; }
+  }
+
+  &__pulse {
+    position: relative;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: $maroon;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 2px solid $maroon;
+      animation: pulseRing 1.8s ease-out infinite;
+    }
+  }
+
+  &__flagtext {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  // the items are absolutely positioned so the stage cannot size itself -
+  // this has to clear the longest notice
+  &__stage {
+    position: relative;
+    min-height: 210px;
+    padding: 26px 30px 46px;
+
+    @include below($bp-md) { min-height: 230px; }
+    @include below($bp-sm) { padding: 20px 20px 44px; min-height: 290px; }
+  }
+
+  &__item {
+    position: absolute;
+    inset: 26px 30px 46px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+
+    &.is-active { opacity: 1; visibility: visible; transform: none; }
+
+    @include below($bp-sm) { inset: 20px 20px 44px; }
+  }
+
+  &__date {
+    display: inline-block;
+    margin-bottom: 9px;
+    padding: 3px 11px;
+    border-radius: 3px;
+    background: rgba(#fff, 0.14);
+    color: $gold-200;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  &__title {
+    color: $paper;
+    font-size: 19px;
+    line-height: 1.35;
+    margin-bottom: 7px;
+
+    @include below($bp-sm) { font-size: 16px; }
+  }
+
+  &__text {
+    color: rgba(#fff, 0.78);
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  &__dots {
+    position: absolute;
+    left: 30px;
+    bottom: 20px;
+    display: flex;
+    gap: 8px;
+
+    @include below($bp-sm) { left: 20px; }
+  }
+
+  &__dot {
+    width: 26px;
+    height: 4px;
+    padding: 0;
+    border: 0;
+    border-radius: 3px;
+    background: rgba(#fff, 0.25);
+    cursor: pointer;
+    transition: background 0.25s ease, width 0.25s ease;
+
+    &.is-active { background: $gold; width: 40px; }
+  }
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(0.7); opacity: 1; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
 // ================= Notice boards (3 columns) =================
 .boards {
   display: grid;

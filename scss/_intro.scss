@@ -1,0 +1,222 @@
+@use "variables" as *;
+
+// ==========================================================
+//  Opening sequence
+//  The school gate swings open on the 73rd year.
+//  Added by JS only, so a JS failure simply skips it.
+// ==========================================================
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+
+  // Opaque to begin with, then cleared just as the gates swing wide -
+  // otherwise the gates would open onto a flat navy panel instead of
+  // onto the page itself.
+  background: $navy;
+  animation: introBgOut 0.9s ease 2.5s forwards;
+
+  &.is-done {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+
+  // ---- the two gate leaves ----
+  &__leaf {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50.5%; // slight overlap hides the seam
+    // background-image is set from JS. It must NOT come from a custom
+    // property: a url() inside one resolves against the stylesheet's
+    // folder (/css/), not the page, which silently 404s.
+    // The photograph is laid out once across the full viewport; each leaf
+    // is anchored to its own side, so together they show the whole gate
+    // and then split it down the middle when they swing.
+    background-size: 100vw 100%;
+    background-repeat: no-repeat;
+    backface-visibility: hidden;
+    will-change: transform;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+
+    &--l {
+      left: 0;
+      background-position: left center;
+      transform-origin: left center;
+      animation: gateOpenL 1.5s cubic-bezier(0.6, 0, 0.3, 1) 2.1s forwards;
+    }
+
+    &--r {
+      right: 0;
+      background-position: right center;
+      transform-origin: right center;
+      animation: gateOpenR 1.5s cubic-bezier(0.6, 0, 0.3, 1) 2.1s forwards;
+    }
+  }
+
+  // The gate is shown plainly for the first half second, then dimmed so
+  // the gold lettering can be read over it, then lifted as it opens.
+  &__veil {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: radial-gradient(
+      ellipse at 50% 45%,
+      rgba($navy, 0.55) 0%,
+      rgba($navy, 0.82) 55%,
+      rgba($navy, 0.95) 100%
+    );
+    animation: veilCycle 3.4s ease forwards;
+  }
+
+  // ---- celebration text ----
+  &__center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    padding: 20px;
+    animation: centreOut 0.8s ease 2.2s forwards;
+  }
+
+  &__ribbon {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 6px 20px;
+    border: 1px solid rgba($gold, 0.6);
+    border-radius: 30px;
+    color: $gold-200;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: riseIn 0.7s ease 0.15s forwards;
+  }
+
+  // the big 3-D number
+  &__years {
+    font-family: $font-head;
+    font-size: clamp(5rem, 22vw, 13rem);
+    font-weight: 700;
+    line-height: 0.9;
+    color: #ffd964;
+    transform: perspective(700px) rotateX(24deg) scale(0.7);
+    opacity: 0;
+    animation: yearsPop 1s cubic-bezier(0.2, 1.5, 0.4, 1) 0.35s forwards;
+    text-shadow:
+      0 1px 0 #d9a923,
+      0 2px 0 #c9991c,
+      0 3px 0 #b98a16,
+      0 4px 0 #a97b11,
+      0 5px 0 #996d0d,
+      0 6px 0 #8a5f0a,
+      0 7px 0 #7a5207,
+      0 8px 0 #6b4605,
+      0 14px 22px rgba(0, 0, 0, 0.55),
+      0 0 60px rgba(255, 201, 77, 0.4);
+  }
+
+  &__label {
+    margin-top: 10px;
+    font-family: $font-head;
+    font-size: clamp(0.95rem, 3.4vw, 1.6rem);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $paper;
+    opacity: 0;
+    animation: riseIn 0.8s ease 0.75s forwards;
+  }
+
+  &__bn {
+    margin-top: 8px;
+    font-family: $font-bn;
+    font-size: clamp(0.85rem, 3vw, 1.15rem);
+    color: $gold-200;
+    opacity: 0;
+    animation: riseIn 0.8s ease 0.95s forwards;
+  }
+
+  &__school {
+    margin-top: 26px;
+    font-size: clamp(0.72rem, 2.4vw, 0.9rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(#fff, 0.62);
+    opacity: 0;
+    animation: riseIn 0.8s ease 1.15s forwards;
+  }
+
+  &__skip {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    padding: 8px 18px;
+    border: 1px solid rgba(#fff, 0.3);
+    border-radius: 30px;
+    background: none;
+    color: rgba(#fff, 0.7);
+    font-family: $font-body;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    opacity: 0;
+    animation: riseIn 0.6s ease 1.4s forwards;
+
+    &:hover { background: rgba(#fff, 0.12); color: #fff; }
+  }
+
+  // ---- confetti ----
+  &__bit {
+    position: absolute;
+    top: -8vh;
+    left: var(--x);
+    width: var(--w);
+    height: var(--h);
+    background: var(--c);
+    border-radius: 1px;
+    opacity: 0;
+    animation: confettiFall var(--dur) linear var(--delay) forwards;
+  }
+}
+
+@keyframes introBgOut {
+  to { background-color: transparent; }
+}
+@keyframes gateOpenL {
+  to { transform: rotateY(-108deg) translateZ(30px); }
+}
+@keyframes gateOpenR {
+  to { transform: rotateY(108deg) translateZ(30px); }
+}
+@keyframes veilCycle {
+  0%   { opacity: 0.1; }  // gate plainly visible
+  18%  { opacity: 1; }    // dimmed, ready for the lettering
+  70%  { opacity: 1; }
+  100% { opacity: 0; }    // lifted as the gates swing
+}
+@keyframes centreOut {
+  to { opacity: 0; transform: scale(1.18); }
+}
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes yearsPop {
+  to { opacity: 1; transform: perspective(700px) rotateX(12deg) scale(1); }
+}
+@keyframes confettiFall {
+  0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+  8%   { opacity: 1; }
+  100% { opacity: 0; transform: translateY(118vh) rotate(var(--spin)); }
+}
+
+// Anyone who asked for less motion gets the site, not the show.
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+}
